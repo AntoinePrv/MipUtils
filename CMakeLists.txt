@@ -9,16 +9,19 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_extensions/)
 find_package(Cplex)
 include_directories(${CPLEX_INCLUDE_DIRS})
 
+find_package(Boost COMPONENTS system filesystem program_options REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
 
 file(
 	GLOB_RECURSE
 	source_files
-	src/*
+	src/lib/*
 )
 
 add_executable(
-	mip-utils
+	mip-coefs
 	${source_files}
+	src/scripts/mip-coefs.cpp
 )
 
-target_link_libraries(mip-utils ${CPLEX_LIBRARIES})
+target_link_libraries(mip-coefs ${CPLEX_LIBRARIES} ${Boost_LIBRARIES})
