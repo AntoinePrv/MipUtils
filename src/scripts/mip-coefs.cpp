@@ -23,7 +23,7 @@ po::variables_map process_program_options(
 		("help,h", "Produce this help message.")
 		("input-file,i", po::value<std::string>()->required(),
 		 "Specifies input file.")
-		("sparse,s", "Write solution in sparse format.")
+		("sparse,s", "Write coefficients in sparse format.")
 		("output-file,o", po::value<std::string>(),
 		 "Specifies output file for the coefficients.");
 

@@ -95,10 +95,10 @@ void insert_bounds(stringstream& constraint, const IloRange& ctr){
 	stringstream otherConstraint;
 	if( !isinf(ub) ){
 		otherConstraint << constraint.rdbuf();
-		otherConstraint << ",-1," << ub << endl;
+		otherConstraint << ",1," << ub << endl;
 	}
 	if( !isinf(lb) )
-		constraint << ",1," << lb << endl;
+		constraint << ",-1," << lb << endl;
 
 	constraint << otherConstraint.rdbuf();
 }
