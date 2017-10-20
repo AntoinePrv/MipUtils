@@ -24,4 +24,10 @@ add_executable(
 	src/scripts/mip-coefs.cpp
 )
 
+add_executable(
+	mip-convert
+	src/scripts/mip-convert.cpp
+)
+
 target_link_libraries(mip-coefs ${CPLEX_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(mip-convert ${CPLEX_LIBRARIES})

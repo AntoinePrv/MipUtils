@@ -19,6 +19,9 @@ void process(string filename, ostream& out, bool sparse){
 	for(unsigned i=0; i<vars.getSize(); ++i)
 		map[vars[i].getName()] = i;
 
+	// Header
+	out << ctrs.getSize() << "," << vars.getSize() << endl;
+
 	// Outputs objective
 	if(sparse)
 		out << objective_sparse(obj, map);
@@ -31,6 +34,9 @@ void process(string filename, ostream& out, bool sparse){
 			out << constraint_sparse(ctrs[i], map);
 		else
 			out << constraint_dense(ctrs[i], map);
+
+	// Outputs variables bounds and type
+	out << variables(vars);
 
 	env.end();
 }
@@ -95,4 +101,15 @@ void insert_bounds(stringstream& constraint, const IloRange& ctr){
 		constraint << ",1," << lb << endl;
 
 	constraint << otherConstraint.rdbuf();
+}
+
+
+string variables(const IloNumVarArray& vars){
+	stringstream constraintCoefs;
+	for(int i=0; i<vars.getSize(); ++i){
+		constraintCoefs << vars[i].getType() << ",";
+		constraintCoefs << vars[i].getLB() << ",";
+		constraintCoefs << vars[i].getUB() << endl;
+	}
+	return constraintCoefs.str();
 }

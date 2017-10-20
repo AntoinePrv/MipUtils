@@ -67,6 +67,8 @@ inline string objective_dense(
 	return objectiveCoefs.str();
 }
 
+string variables(const IloNumVarArray& vars);
+
 void process(string filename, ostream& out, bool sparse=true);
 
 
