@@ -69,7 +69,12 @@ inline string objective_dense(
 
 string variables(const IloNumVarArray& vars);
 
-void process(string filename, ostream& out, bool sparse=true);
+void process(
+	string filename,
+	ostream& out,
+	bool sparse=true,
+	bool keep_empty=true
+);
 
 
 #endif

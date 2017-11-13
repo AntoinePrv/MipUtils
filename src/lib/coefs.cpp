@@ -1,7 +1,7 @@
 #include "coefs.hpp"
 
 
-void process(string filename, ostream& out, bool sparse){
+void process(string filename, ostream& out, bool sparse, bool keep_empty){
 	// Initializating Cplex objects
 	IloEnv env;
 	IloModel model(env, "Imported Model");
@@ -29,11 +29,14 @@ void process(string filename, ostream& out, bool sparse){
 		out << objective_dense(obj, map);
 
 	// Outputs constraints
-	for(unsigned i=0; i<ctrs.getSize(); ++i)
+	for(unsigned i=0; i<ctrs.getSize(); ++i){
+		if(!keep_empty && !ctrs[i].getLinearIterator().ok())
+			continue;
 		if(sparse)
 			out << constraint_sparse(ctrs[i], map);
 		else
 			out << constraint_dense(ctrs[i], map);
+	}
 
 	// Outputs variables bounds and type
 	out << variables(vars);

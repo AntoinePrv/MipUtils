@@ -25,7 +25,8 @@ po::variables_map process_program_options(
 		 "Specifies input file.")
 		("sparse,s", "Write coefficients in sparse format.")
 		("output-file,o", po::value<std::string>(),
-		 "Specifies output file for the coefficients.");
+		 "Specifies output file for the coefficients.")
+		("remove-empty", "Remove empty constraints.");
 
 	po::positional_options_description p;
 	p.add("input-file", 1);
@@ -56,15 +57,16 @@ int main (int argc, char **argv){
 	po::variables_map options = process_program_options(argc, argv);
 
 	bool sparse = options.count("sparse");
+	bool keep_empty = !options.count("remove-empty");
 	string infile = options["input-file"].as<string>();
 
 	if(options.count("output-file")){
 		string outfile = options["output-file"].as<string>();
 		ofstream out(outfile);
-		process(infile, out, sparse);
+		process(infile, out, sparse, keep_empty);
 		out.close();
 	} else
-		process(infile, cout, sparse);
+		process(infile, cout, sparse, keep_empty);
 
 	return 0;
 }
