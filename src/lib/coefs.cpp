@@ -87,20 +87,27 @@ void insert_bounds(stringstream& constraint, const IloRange& ctr){
 	double lb = ctr.getLB();
 	double ub = ctr.getUB();
 
+	// Case equality
 	if( lb == ub ){
 		constraint << ",0," << lb << endl;
 		return;
 	}
 
-	stringstream otherConstraint;
-	if( !isinf(ub) ){
+	// Case two bounds
+	if (!isinf(ub) && !isinf(lb)){
+		stringstream otherConstraint;
 		otherConstraint << constraint.rdbuf();
-		otherConstraint << ",1," << ub << endl;
+		constraint << ",1," << ub << endl;
+		otherConstraint  << ",-1," << lb << endl;
+		constraint << otherConstraint.rdbuf();
+		return;
 	}
+
+	// Case one constraint
+	if( !isinf(ub) )
+		constraint << ",1," << ub << endl;
 	if( !isinf(lb) )
 		constraint << ",-1," << lb << endl;
-
-	constraint << otherConstraint.rdbuf();
 }
 
 
