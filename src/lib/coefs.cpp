@@ -20,7 +20,8 @@ void process(string filename, ostream& out, bool sparse, bool keep_empty){
 		map[vars[i].getName()] = i;
 
 	// Header
-	out << ctrs.getSize() << "," << vars.getSize() << endl;
+	// Number of actual constraints may change
+	out << count_constraints(ctrs, keep_empty) << "," << vars.getSize() << endl;
 
 	// Outputs objective
 	if(sparse)
@@ -42,6 +43,22 @@ void process(string filename, ostream& out, bool sparse, bool keep_empty){
 	out << variables(vars);
 
 	env.end();
+}
+
+
+unsigned count_constraints(const IloRangeArray ctrs, bool keep_empty){
+	unsigned cnt = 0;
+	for(unsigned i=0; i<ctrs.getSize(); ++i){
+		IloRange ctr = ctrs[i];
+		if(!keep_empty && !ctrs[i].getLinearIterator().ok())
+			continue;
+		double lb = ctr.getLB();
+		double ub = ctr.getUB();
+		if( !isinf(lb) ) ++cnt;
+		if( !isinf(ub) ) ++cnt;
+		if( lb == ub ) --cnt;
+	}
+	return cnt;
 }
 
 

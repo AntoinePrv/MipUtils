@@ -12,6 +12,14 @@ ILOSTLBEGIN
 
 using namespace std;
 
+void process(
+	string filename,
+	ostream& out,
+	bool sparse=true,
+	bool keep_empty=true
+);
+
+unsigned count_constraints(const IloRangeArray ctrs, bool keep_empty);
 
 void insert_coefs_sparse(
 	stringstream& rowCoef,
@@ -68,13 +76,6 @@ inline string objective_dense(
 }
 
 string variables(const IloNumVarArray& vars);
-
-void process(
-	string filename,
-	ostream& out,
-	bool sparse=true,
-	bool keep_empty=true
-);
 
 
 #endif
